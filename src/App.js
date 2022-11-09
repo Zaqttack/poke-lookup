@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -34,7 +34,7 @@ const App = () => {
     <div className="App">
       <form onSubmit={handleSubmit}>
         <label>
-          <input type='text' onChange={handleChange} placeholder='Enter Pokemon Name'></input>
+          <input type='text' onChange={handleChange} placeholder='Enter Pokemon Name' data-testid='pokemon-input'></input>
         </label>
       </form>
       {pokemonData.map((data) => {
