@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
+import { 
+  Container,
+  Box,
+  TextField,
+  TableContainer,
+  Paper,
+  Table,
+  TableBody,
+} from '@mui/material';
+import { TableRowItem } from './components'
 import axios from 'axios';
-import './App.css';
 
 const App = () => {
-  const [pokemon, setPokemon] = useState('pikachu');
+  const [pokemon, setPokemon] = useState('');
   const [pokemonData, setPokemonData] = useState([]);
   const [pokemonType, setPokemonType] = useState('');
+  const [pokemonError, setPokemonError] = useState(false);
+  const [pokemonErrorText, setPokemonErrorText] = useState('');
 
   const getPokemon = async () => {
     const toArray = [];
@@ -17,11 +28,15 @@ const App = () => {
       setPokemonData(toArray);
       console.log(result);
     } catch(err) {
-      console.error(err)
+      setPokemonError(!!err)
+      setPokemonErrorText('Not a Pokemon!')
+      console.log(err)
     }
   }
 
   const handleChange = (e) => {
+    setPokemonError(false)
+    setPokemonErrorText('')
     setPokemon(e.target.value.toLowerCase())
   }
 
@@ -31,39 +46,57 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
-        <label>
-          <input type='text' onChange={handleChange} placeholder='Enter Pokemon Name' data-testid='pokemon-input'></input>
-        </label>
-      </form>
-      {pokemonData.map((data) => {
-        return (
-          <div className='container'>
-            <img src={data.sprites['front_default']}/>
-            <div className='divTable'>
-              <div className='divTableBody'></div>
-              <div className='divTableRow'>
-                <div className='divTableCell'>Type</div>
-                <div className='divTableCell'>{pokemonType}</div>
-              </div>
-              <div className='divTableRow'>
-                <div className='divTableCell'>Height</div>
-                <div className='divTableCell'>{' '}{Math.round(data.height * 3.9)} "</div>
-              </div>
-              <div className='divTableRow'>
-                <div className='divTableCell'>Weight</div>
-                <div className='divTableCell'>{' '} {Math.round(data.weight / 4.9)} lbs</div>
-              </div>
-              <div className='divTableRow'>
-                <div className='divTableCell'>Number of Battle</div>
-                <div className='divTableCell'>{data.game_indices.length}</div>
-              </div>
-            </div>
-          </div>
-        )
-      })}
-    </div>
+    <>
+      <Container maxWidth="md">
+        <Box
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          component="form"
+          autoComplete="off"
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            id='pokemon-choice'
+            data-testid='pokemon-input'
+            label='Pokemon'
+            variant='filled'
+            onChange={handleChange}
+            error={pokemonError}
+            helperText={pokemonErrorText}
+          />
+        </Box>
+        {pokemonData.map((data) => {
+          const height = `${Math.round(data.height * 3.9)} "`
+          const weight = `${Math.round(data.weight / 4.9)} lbs`
+
+          return (
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="Pokemon stats table">
+                <TableBody>
+                  <TableRowItem
+                    title="Type"
+                    info={pokemonType}
+                  />
+                  <TableRowItem
+                    title="Height"
+                    info={height}
+                  />
+                  <TableRowItem
+                    title="Weight"
+                    info={weight}
+                  />
+                  <TableRowItem
+                    title="# of Games"
+                    info={data.game_indices.length}
+                  />
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )
+        })}
+      </Container>
+    </>
   );
 }
 
