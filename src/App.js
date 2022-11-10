@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  Container,
+  Typography,
+  Grid,
   Box,
   TextField,
   TableContainer,
@@ -47,55 +48,69 @@ const App = () => {
 
   return (
     <>
-      <Container maxWidth="md">
-        <Box
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-          }}
-          component="form"
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-          <TextField
-            id='pokemon-choice'
-            data-testid='pokemon-input'
-            label='Pokemon'
-            variant='filled'
-            onChange={handleChange}
-            error={pokemonError}
-            helperText={pokemonErrorText}
-          />
-        </Box>
-        {pokemonData.map((data) => {
-          const height = `${Math.round(data.height * 3.9)} "`
-          const weight = `${Math.round(data.weight / 4.9)} lbs`
+      <Grid container xs={12} display="flex" justifyContent="center" alignItems="center">
+        <Box sx={{ width: '75%' }}>
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+              <Typography variant="h1">
+                Poke Guesser
+              </Typography>
+            </Grid>
+            <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+              <Box
+                sx={{
+                  '& .MuiTextField-root': { m: 1, width: '25ch' },
+                }}
+                component="form"
+                autoComplete="off"
+                onSubmit={handleSubmit}
+                centered
+              >
+                <TextField
+                  id='pokemon-choice'
+                  data-testid='pokemon-input'
+                  label='Pokemon'
+                  variant='filled'
+                  onChange={handleChange}
+                  error={pokemonError}
+                  helperText={pokemonErrorText}
+                />
+              </Box>
+            </Grid>
+            {pokemonData.map((data) => {
+              const height = `${Math.round(data.height * 3.9)} "`
+              const weight = `${Math.round(data.weight / 4.9)} lbs`
 
-          return (
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="Pokemon stats table">
-                <TableBody>
-                  <TableRowItem
-                    title="Type"
-                    info={pokemonType}
-                  />
-                  <TableRowItem
-                    title="Height"
-                    info={height}
-                  />
-                  <TableRowItem
-                    title="Weight"
-                    info={weight}
-                  />
-                  <TableRowItem
-                    title="# of Games"
-                    info={data.game_indices.length}
-                  />
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )
-        })}
-      </Container>
+              return (
+                <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="Pokemon stats table">
+                      <TableBody>
+                        <TableRowItem
+                          title="Type"
+                          info={pokemonType}
+                        />
+                        <TableRowItem
+                          title="Height"
+                          info={height}
+                        />
+                        <TableRowItem
+                          title="Weight"
+                          info={weight}
+                        />
+                        <TableRowItem
+                          title="# of Games"
+                          info={data.game_indices.length}
+                        />
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+              )
+            })}
+          </Grid>
+        </Box>
+      </Grid>
     </>
   );
 }
