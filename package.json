@@ -21,7 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@toolz/allow-react)/\" --env=jsdom",
     "eject": "react-scripts eject",
-    "prep": "npm test && npm build && gi add ."
+    "prep": "npm run test && npm run build && git add ."
   },
   "eslintConfig": {
     "extends": [
